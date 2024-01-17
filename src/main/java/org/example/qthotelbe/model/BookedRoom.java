@@ -57,14 +57,8 @@ public class BookedRoom {
         calculateTotalNumberOfGuest(); //  goi lai ham tinh khi set lai so nguoi lon de cap nhat lai tong so khach
     }
 
-    @ManyToOne(optional = false)
-    private Room rooms;
 
-    public Room getRooms() {
-        return rooms;
-    }
 
-    public void setRooms(Room rooms) {
-        this.rooms = rooms;
-    }
+
+
 }
