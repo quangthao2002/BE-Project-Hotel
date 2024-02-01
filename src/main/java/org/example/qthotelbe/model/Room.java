@@ -39,22 +39,17 @@ public class Room {
         this.bookings = new ArrayList<>(); // khoi tao 1 list rong
     }
 
-    public void addBooking(BookedRoom booking) {
-
-        if(bookings == null){
-            bookings = new ArrayList<>(); //
-        }
-        bookings.add(booking); // them booking vao list booking cua room
-        booking.setRoom(this); // set room cho booking , this la room hien tai, cho biet booking nay thuoc ve room nao trong list room
-        isBooked = true;
-        String codeBooking = RandomStringUtils.random(10);
-        booking.setBookingConfirmationCode(codeBooking); // set code booking cho booking
-    }
-
-
-
-
-
+//    public void addBooking(BookedRoom booking) {
+//
+//        if(bookings == null){
+//            bookings = new ArrayList<>(); //
+//        }
+//        bookings.add(booking); // them booking vao list booking cua room
+//        booking.setRoom(this); // set room cho booking , this la room hien tai, cho biet booking nay thuoc ve room nao trong list room
+//        isBooked = true;
+//        String codeBooking = RandomStringUtils.random(10);
+//        booking.setBookingConfirmationCode(codeBooking); // set code booking cho booking
+//    }
 
 
 }
