@@ -13,14 +13,10 @@ public class RoomResponse {
 
     private Long id;
     private String roomType;
-
     private BigDecimal roomPrice;
     private  boolean isBooked;
-
     private String photo; // chuyen du lieu tu Blob sang String
-
     private List<BookingRomResponse> bookings;
-
 
     public RoomResponse(Long id, String roomType, BigDecimal roomPrice) {
         this.id = id;
@@ -33,8 +29,7 @@ public class RoomResponse {
         this.roomType = roomType;
         this.roomPrice = roomPrice;
         this.isBooked = isBooked;
-        this.photo =  photoBytes != null ? Base64.encodeBase64String(photoBytes) : null; // kiem tra neu khong trong thi se  nhan 1 chuoi tu db va ma hoa thanh buc anh
-//        this.bookings = bookings;
+        this.photo =  photoBytes != null ? Base64.encodeBase64String(photoBytes) : null; // kiem tra neu khong trong thi se  nhan 1 chuoi tu db va ma hoa no
     }
 
 
