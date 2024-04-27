@@ -46,7 +46,6 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public Role findByName(String name) {
         return roleRepository.findRoleByName(name).orElseThrow(() -> new RoleAlreadyExistsException("Role not found"));
-
     }
 
     @Override
@@ -69,16 +68,11 @@ public class RoleServiceImpl implements IRoleService {
         Optional<User> user = userRepository.findById(userId);
         Optional<Role> role = roleRepository.findById(roleId);
 
-//        if (user.isEmpty()){
-//            throw new UsernameNotFoundException("User not found");
-//        }
-//        if (role.isEmpty()){
-//            throw new RoleAlreadyExistsException("Role not found");
-//        }
-        if (user.isPresent() && user.get().getRoles().contains(role.get())){
-            throw  new UserAlreadyExistsException(user.get().getFirstName()+"is already assigned to the"+ role.get().getName());
+
+        if (user.isPresent() && user.get().getRoles().contains(role.get())) {
+            throw new UserAlreadyExistsException(user.get().getFirstName() + "is already assigned to the" + role.get().getName());
         }
-        if (role.isPresent()){
+        if (role.isPresent()) {
             role.get().assignRoleToUser(user.get());
             roleRepository.save(role.get());
         }
@@ -87,8 +81,8 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public Role removeAllUsersFromRole(Long roleId) {
-        Optional<Role>  role = roleRepository.findById(roleId);
-        role.ifPresent(Role :: removeAllUsersFromRole); // neu role ton tai thi xoa tat ca nguoi dung trong role
-        return  roleRepository.save(role.get());
+        Optional<Role> role = roleRepository.findById(roleId);
+        role.ifPresent(Role::removeAllUsersFromRole); // neu role ton tai thi xoa tat ca nguoi dung trong role
+        return roleRepository.save(role.get());
     }
 }

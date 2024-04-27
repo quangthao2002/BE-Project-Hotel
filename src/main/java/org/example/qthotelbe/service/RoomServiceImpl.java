@@ -64,6 +64,7 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public void deleteRoomById(Long roomId) {
         Optional<Room> theRoom =  roomRepository.findById(roomId);
+        System.out.println("RoomServiceImpl.deleteRoomById"+theRoom);
         if(theRoom.isPresent()){ // co room se xoa room
             roomRepository.deleteById(roomId);
         }

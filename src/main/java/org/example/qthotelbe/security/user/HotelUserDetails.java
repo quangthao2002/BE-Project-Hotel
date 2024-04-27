@@ -1,9 +1,6 @@
 package org.example.qthotelbe.security.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.example.qthotelbe.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,35 +10,35 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
+
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class HotelUserDetails implements UserDetails {
-
     private Long id;
-    private String email;
-
+    private  String email;
     private String password;
-
     private Collection<GrantedAuthority> authorities;
 
-    public static  HotelUserDetails buiHotelUserDetails(User user){
-        List<GrantedAuthority> authorities = user.getRoles() // lay roles cua user va chuyen thanh list authorities voi cac role, authority la cac quyen cua user
-                .stream()
-//  Mỗi GrantedAuthority được tạo từ một role của user thông qua việc sử dụng new SimpleGrantedAuthority(role.getName()).
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
-        // tra ve doi tuong moi HotelUserDetails voi cac thong tin cua user va authorities
-        return  new HotelUserDetails(
+    public static HotelUserDetails buildUserDetails(User user){
+        List<GrantedAuthority> authorities = user.getRoles()// lay ra danh sach cac role cua user
+                .stream() // chuyen sang dang stream
+                .map(role -> new SimpleGrantedAuthority(role.getName())) // chuyen sang dang SimpleGrantedAuthority de tao ra danh sach cac quyen
+                .collect(Collectors.toList());// chuyen sang dang list
+    // tra ve doi tuong HotelUserDetails chua thong tin cua user va danh sach cac quyen
+        return new HotelUserDetails(
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities
-        );
+                authorities);
+
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         return authorities;
     }
 
@@ -52,7 +49,7 @@ public class HotelUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email ;
+        return email;
     }
 
     @Override

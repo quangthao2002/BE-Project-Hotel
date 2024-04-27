@@ -11,21 +11,22 @@ import org.example.qthotelbe.service.IBookingService;
 import org.example.qthotelbe.service.IRoomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/bookings")
 @RequiredArgsConstructor
-public class BookerRoomController {
+public class BookingRoomController {
     private final IBookingService bookingService;
     private final IRoomService roomService;
 
     @GetMapping("/all-bookings")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<BookingRomResponse>> getAllBookings(){
         List<BookedRoom> bookings = bookingService.getAllBookings();
         List<BookingRomResponse> bookingResponses =  new ArrayList<>();
@@ -67,6 +68,16 @@ public class BookerRoomController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
+    @GetMapping("/user/{email}/bookings")
+    public ResponseEntity<List<BookingRomResponse>> getBookingByUserEmail(@PathVariable String email){
+       List<BookedRoom> bookings = bookingService.getBookingsByUserEmail(email);
+       List<BookingRomResponse> bookingResponses = new ArrayList<>();
+       for (BookedRoom booking : bookings){
+           BookingRomResponse bookingResponse = getBookingResponse(booking);
+           bookingResponses.add(bookingResponse);
+       }
+         return ResponseEntity.ok(bookingResponses);
+    }
 
     private BookingRomResponse getBookingResponse(BookedRoom booking) {
 
@@ -76,7 +87,6 @@ public class BookerRoomController {
                 theRoom.get().getRoomType(),
                 theRoom.get().getRoomPrice()
         );
-
         return  new BookingRomResponse(
                 booking.getBookingId(),
                 booking.getCheckInDate(),

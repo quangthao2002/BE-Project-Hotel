@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.qthotelbe.exception.RoleAlreadyExistsException;
 import org.example.qthotelbe.model.Role;
 import org.example.qthotelbe.model.User;
-import org.example.qthotelbe.repository.RoleRepository;
 import org.example.qthotelbe.service.IRoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,8 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.FOUND;
 
 @RestController
-@RequestMapping("/api/roles")
+
+@RequestMapping("/roles")
 @RequiredArgsConstructor
 public class RoleController {
 
@@ -29,7 +29,6 @@ public class RoleController {
 
     @PostMapping("/create-new-role")
     public ResponseEntity<String> createRole(@RequestBody Role theRole){
-
         try {
             roleService.createRole(theRole);
             return new ResponseEntity<>("Role created successfully", HttpStatus.CREATED);

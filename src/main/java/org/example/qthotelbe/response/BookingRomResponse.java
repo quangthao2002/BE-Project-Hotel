@@ -1,5 +1,6 @@
 package org.example.qthotelbe.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class BookingRomResponse {
     private Long id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate checkInDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate checkOutDate;
     private String guestName;
     private String guestEmail;
