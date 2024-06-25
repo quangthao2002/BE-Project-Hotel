@@ -41,6 +41,15 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+    @PostMapping("/register-admin")
+    public ResponseEntity<?> registerAdmin(@RequestBody User user){
+        try{
+            userService.registerAdmin(user);
+            return ResponseEntity.ok("Registration successful!");
+        }catch (UserAlreadyExistsException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request){

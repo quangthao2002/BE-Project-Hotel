@@ -9,6 +9,7 @@ import org.example.qthotelbe.response.BookingRomResponse;
 import org.example.qthotelbe.response.RoomResponse;
 import org.example.qthotelbe.service.IBookingService;
 import org.example.qthotelbe.service.IRoomService;
+import org.example.qthotelbe.service.MailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,7 @@ import java.util.Optional;
 public class BookingRoomController {
     private final IBookingService bookingService;
     private final IRoomService roomService;
+    private final MailService mailService;
 
     @GetMapping("/all-bookings")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -53,11 +55,15 @@ public class BookingRoomController {
     public ResponseEntity<?> saveBooking(@PathVariable Long roomId, @RequestBody BookedRoom bookingRequest){
         try {
             String confirmCode = bookingService.saveBooking(roomId, bookingRequest);
+            sendMail(bookingRequest,confirmCode);
+
+
             return ResponseEntity.ok("Room Booked Successfully with confirmation code: " + confirmCode);
         }catch (InvalidBookingRequestException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
 
     @DeleteMapping("/booking/{bookingId}/delete")
     public ResponseEntity<?> cancelBooking(@PathVariable Long bookingId){
@@ -98,5 +104,18 @@ public class BookingRoomController {
                 booking.getTotalNumberOfGuest(),
                 booking.getBookingConfirmationCode(),
                 roomResponse);
+    }
+    public void sendMail(BookedRoom bookingRequest,String confirmCode){
+        mailService.sendEmail(bookingRequest.getGuestEmail(), "Booking Confirmation", "Your booking has been confirmed with confirmation code: " + confirmCode
+                + "\nCheck in date: " + bookingRequest.getCheckInDate()
+                + "\nCheck out date: " + bookingRequest.getCheckOutDate()
+                + "\nGuest name: " + bookingRequest.getGuestFullName()
+                + "\nGuest email: " + bookingRequest.getGuestEmail()
+                + "\nNumber of adults: " + bookingRequest.getNumberOfAdults()
+                + "\nNumber of children: " + bookingRequest.getNumberOfChildren()
+                + "\nTotal number of guests: " + bookingRequest.getTotalNumberOfGuest()
+                + "\nRoom type: " + bookingRequest.getRoom().getRoomType()
+                + "\nRoom price: " + bookingRequest.getRoom().getRoomPrice()
+        );
     }
 }
